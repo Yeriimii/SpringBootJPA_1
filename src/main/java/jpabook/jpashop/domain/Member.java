@@ -18,7 +18,7 @@ public class Member {
 
     private String name;
 
-    @Embedded // 임베디드 속줌
+    @Embedded // 임베디드 속성
     private Address address;
 
     @OneToMany(mappedBy = "member") // 한 명의 멤버가 여러 주문. mappedBy는 Order에 의해 매핑되는 거울일 뿐.(읽기 전용)

@@ -8,6 +8,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static javax.persistence.FetchType.*;
+
 @Entity
 @Table(name = "orders")
 @Getter @Setter
@@ -17,14 +19,14 @@ public class Order {
     @Column(name = "order_id") // 컬럼명 지정
     private Long id;
 
-    @ManyToOne // 여러 주문은 하나의 멤버에게
+    @ManyToOne(fetch = LAZY) // 여러 주문은 하나의 멤버에게, @XToOne fetch 는 LAZY(지연)으로 해야 튜닝을 하든 한다.
     @JoinColumn(name = "member_id") // member_id 를 FK로 매핑해줌. 연관관계의 주인 !!!
     private Member member;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL) // CascadeType.ALL -> persist(order)만 해도 나머진 전파 됨
     private List<OrderItem> orderItems = new ArrayList<>();
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "delivery_id") // 연관관계의 주인은 Order !!!
     private Delivery delivery;
 
@@ -33,4 +35,19 @@ public class Order {
     @Enumerated(EnumType.STRING) // EnumType.ORDINAL(default)은 숫자로 들어감(1, 2, 3 ...). 꼭 STRING 으로
     private OrderStatus status; // 주문상태 [ORDER, CANCLE]
 
+    // ==연관간계 편의 메서드== : 양방향일 때 양쪽 세팅을 한 코드로 해결
+    public void setMember(Member member) {
+        this.member = member;
+        member.getOrders().add(this);
+    }
+
+    public void addOrderItem(OrderItem orderItem) {
+        orderItems.add(orderItem);
+        orderItem.setOrder(this);
+    }
+
+    public void setDelivery(Delivery delivery) {
+        this.delivery = delivery;
+        delivery.setOrder(this);
+    }
 }
