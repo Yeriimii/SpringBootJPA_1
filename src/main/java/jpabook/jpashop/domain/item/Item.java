@@ -29,16 +29,16 @@ public abstract class Item {
     @ManyToMany(mappedBy = "items")
     private List<Category> categories = new ArrayList<>();
 
-    @OneToMany(mappedBy = "item")
-    private Collection<OrderItem> orderItem;
-
-    public Collection<OrderItem> getOrderItem() {
-        return orderItem;
-    }
-
-    public void setOrderItem(Collection<OrderItem> orderItem) {
-        this.orderItem = orderItem;
-    }
+//    @OneToMany(mappedBy = "item")
+//    private Collection<OrderItem> orderItem;
+//
+//    public Collection<OrderItem> getOrderItem() {
+//        return orderItem;
+//    }
+//
+//    public void setOrderItem(Collection<OrderItem> orderItem) {
+//        this.orderItem = orderItem;
+//    }
 
     //==비즈니스 로직==//
 
