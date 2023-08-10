@@ -45,7 +45,7 @@ public class MemberController {
 
     @GetMapping("/members")
     public String list(Model model) {
-        List<Member> members = memberService.findMembers();
+        List<Member> members = memberService.findMembers(); // API 를 만들 때는, 절대 엔티티를 반환하면 안된다!
         model.addAttribute("members", members);
         return "members/memberList";
     }
